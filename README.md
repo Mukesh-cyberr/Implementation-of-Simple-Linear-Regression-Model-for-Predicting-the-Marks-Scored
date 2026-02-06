@@ -8,11 +8,17 @@ To write a program to predict the marks scored by a student using the simple lin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Import required Python libraries and create the datasets with study hours and marks. 2.Divide the datasets into training and testing sets.
-2. Create a simple Linear Regression model and train it using the training data.
-3. Use the trained model to predict marks on the testing data and display the predicted output. 
+Step 1: Get the Independent Variable X and Dependent Variable Y - Load the dataset and extract X (study hours) and Y (marks scored).
 
+Step 2: Calculate the Mean of the X-values and the Mean of the Y-values - Compute X̄ = (Σxi) / n and Ȳ = (Σyi) / n.
 
+Step 3: Find the Slope m of the Line of Best Fit Using the Formula - Calculate m = Σ[(xi - X̄)(yi - Ȳ)] / Σ[(xi - X̄)²].
+
+Step 4: Compute the Y-intercept of the Line Using the Formula - Calculate b = Ȳ - m·X̄.
+
+Step 5: Use the Slope m and the Y-intercept to Form the Equation of the Line - Form the equation Y = mX + b.
+
+Step 6: Obtain the Straight Line Equation Y = mX + b and Plot the Scatterplot - Plot the scatter plot of original data points and overlay the regression line Y = mX + b.
 ## Program:
 ```
 /*
