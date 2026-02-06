@@ -1,4 +1,3 @@
-# Implementation-of-Simple-Linear-Regression-Model-for-Predicting-the-Marks-Scored
 
 ## AIM:
 To write a program to predict the marks scored by a student using the simple linear regression model.
@@ -8,78 +7,96 @@ To write a program to predict the marks scored by a student using the simple lin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-Step 1: Get the Independent Variable X and Dependent Variable Y - Load the dataset and extract X (study hours) and Y (marks scored).
-
-Step 2: Calculate the Mean of the X-values and the Mean of the Y-values - Compute X̄ = (Σxi) / n and Ȳ = (Σyi) / n.
-
-Step 3: Find the Slope m of the Line of Best Fit Using the Formula - Calculate m = Σ[(xi - X̄)(yi - Ȳ)] / Σ[(xi - X̄)²].
-
-Step 4: Compute the Y-intercept of the Line Using the Formula - Calculate b = Ȳ - m·X̄.
-
-Step 5: Use the Slope m and the Y-intercept to Form the Equation of the Line - Form the equation Y = mX + b.
-
-Step 6: Obtain the Straight Line Equation Y = mX + b and Plot the Scatterplot - Plot the scatter plot of original data points and overlay the regression line Y = mX + b.
+1. Load the dataset into a DataFrame and explore its contents to understand the data structure.
+2. Separate the dataset into independent (X) and dependent (Y) variables, and split them into training and testing sets.
+3. Create a linear regression model and fit it using the training data.
+4. Predict the results for the testing set and plot the training and testing sets with fitted lines.
+5. Calculate error metrics (MSE, MAE, RMSE) to evaluate the model’s performance.
 ## Program:
 ```
-/*
-Program to implement the simple linear regression model for predicting the marks scored.
-Developed by: Mukesh Raj D
-RegisterNumber:  212224100038
-*/
 
-
-import numpy as np
+# Program to implement the simple linear regression model for predicting the marks scored.
+# Developed by: MUKESH RAJ D
+# RegisterNumber: 212224100038
+```
+```
+# Importing necessary libraries
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score
 
-data = {
-    "Hours_Studied": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    "Marks_Scored":  [35, 40, 50, 55, 60, 65, 70, 80, 85, 95]
-}
-df = pd.DataFrame(data)
+# Load the dataset
+df = pd.read_csv("student_scores.csv")
 
-print("Dataset:\n", df.head())
-df
+# Display the first few rows of the dataset
+print("First 5 rows of the dataset:")
+print(df.head())
 
-X = df[["Hours_Studied"]]  
-y = df["Marks_Scored"]      
+# Display the last few rows of the dataset
+print("Last 5 rows of the dataset:")
+print(df.tail())
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+# Separate the independent (X) and dependent (Y) variables
+X = df.iloc[:, :-1].values  # Assuming the 'Hours' column is the first column
+Y = df.iloc[:, 1].values    # Assuming the 'Scores' column is the second column
 
-model = LinearRegression()
-model.fit(X_train, y_train)
+# Split the dataset into training and testing sets (1/3rd for testing)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=1/3, random_state=0)
 
-y_pred = model.predict(X_test)
+# Create and train the Linear Regression model
+regressor = LinearRegression()
+regressor.fit(X_train, Y_train)
 
-print("\nModel Parameters:")
-print("Intercept (b0):", model.intercept_)
-print("Slope (b1):", model.coef_[0])
+# Predict the test set results
+Y_pred = regressor.predict(X_test)
 
-print("\nEvaluation Metrics:")
-print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
-print("R² Score:", r2_score(y_test, y_pred))
-plt.figure(figsize=(8,6))
-plt.scatter(X, y, color='blue', label="Actual Data")
-plt.plot(X, model.predict(X), color='red', linewidth=2, label="Regression Line")
+# Display predicted and actual values for testing set
+print("Predicted values:")
+print(Y_pred)
+print("Actual values:")
+print(Y_test)
+
+# Plot the Training set results
+plt.scatter(X_train, Y_train, color="red", label="Actual Scores")
+plt.plot(X_train, regressor.predict(X_train), color="blue", label="Fitted Line")
+plt.title("Hours vs Scores (Training Set)")
 plt.xlabel("Hours Studied")
-plt.ylabel("Marks Scored")
-plt.title("Simple Linear Regression: Predicting Marks")
+plt.ylabel("Scores Achieved")
 plt.legend()
-plt.grid(True)
 plt.show()
-hours = 7.5
-predicted_marks = model.predict([[hours]])
-print(f"\nPredicted marks for {hours} hours of study = {predicted_marks[0]:.2f}")
+
+# Plot the Testing set results
+plt.scatter(X_test, Y_test, color='green', label="Actual Scores")
+plt.plot(X_train, regressor.predict(X_train), color='red', label="Fitted Line")
+plt.title("Hours vs Scores (Testing Set)")
+plt.xlabel("Hours Studied")
+plt.ylabel("Scores Achieved")
+plt.legend()
+plt.show()
+
+# Calculate and print error metrics
+mse = mean_squared_error(Y_test, Y_pred)
+mae = mean_absolute_error(Y_test, Y_pred)
+rmse = np.sqrt(mse)
+
+print('Mean Squared Error (MSE) =', mse)
+print('Mean Absolute Error (MAE) =', mae)
+print('Root Mean Squared Error (RMSE) =', rmse)
+
 
 ```
 
 ## Output:
-<img width="1142" height="710" alt="image" src="https://github.com/user-attachments/assets/f2baef6f-b4b2-4fd2-a029-4067a8314f76" />
+<img width="696" height="415" alt="image" src="https://github.com/user-attachments/assets/f1c3f2b0-dcb1-4958-9764-f9de8f14836c" />
+
+
+<img width="725" height="556" alt="image" src="https://github.com/user-attachments/assets/fb7a261a-845c-44ef-90a8-64888739670c" />
+
+
+<img width="722" height="637" alt="image" src="https://github.com/user-attachments/assets/68557f7b-d10c-4aed-8223-aeeb7e10b2fe" />
 
 
 ## Result:
